@@ -4,7 +4,6 @@ import { FormEvent } from "react";
 interface ConfirmTripModalProps {
     closeConfirmTripModal: () => void
     createTrip: (event: FormEvent<HTMLFormElement>) => void
-
 }
 
 export default function ConfirmTripModal({closeConfirmTripModal, createTrip}: ConfirmTripModalProps) {
