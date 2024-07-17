@@ -1,10 +1,12 @@
 import { X, User, Calendar } from "lucide-react"
+import Button from "../../components/button"
+import TextInput from "../../components/textInput"
 
 interface CreateActivityModalProps {
     closeCreateActivityModal: () => void
 }
 
-export default function CreateActivityModal({closeCreateActivityModal}: CreateActivityModalProps) {
+export default function CreateActivityModal({ closeCreateActivityModal }: CreateActivityModalProps) {
 
     return (
         <div className='fixed inset-0 bg-black/60 flex items-center justify-center'>
@@ -21,21 +23,17 @@ export default function CreateActivityModal({closeCreateActivityModal}: CreateAc
 
                 <form className='space-y-3'>
 
-                    <div className='h-14 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2'>
+                    <TextInput type="text" name='name' placeholder="Qual a atividade?">
                         <User className='text-zinc-400 size-5' />
-                        <input type="text" name='name' placeholder="Qual a atividade?" className="bg-transparent text-lg text-zinc-400 outline-none flex-1" />
-                    </div>
+                    </TextInput>
 
-                    <div className="flex items-center gap-2">
-                        <div className='h-14 flex-1 px-4 bg-zinc-950 border border-zinc-800 rounded-lg flex items-center gap-2'>
-                            <Calendar className='text-zinc-400 size-5' />
-                            <input type="datetime-local" name='occurs_st' placeholder="Data e horário da atividade" className="bg-transparent text-lg text-zinc-400 outline-none flex-1" />
-                        </div>
-                    </div>
+                    <TextInput type="datetime-local" name='occurs_st' placeholder="Data e horário da atividade">
+                        <Calendar className='text-zinc-400 size-5' />
+                    </TextInput>
 
-                    <button type='submit' className='bg-lime-300 text-lime-950 rounded-lg px-5 h-11 font-medium flex items-center gap-2 hover:bg-lime-400 w-full justify-center'>
+                    <Button variant="primary" size="full">
                         Salvar atividade
-                    </button>
+                    </Button>
 
                 </form>
             </div>
