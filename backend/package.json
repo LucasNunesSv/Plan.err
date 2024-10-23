@@ -17,6 +17,7 @@
     "typescript": "^5.5.3"
   },
   "dependencies": {
+    "@fastify/cors": "^8.0.0",
     "@prisma/client": "^5.17.0",
     "dayjs": "^1.11.13",
     "fastify": "^4.28.1",
