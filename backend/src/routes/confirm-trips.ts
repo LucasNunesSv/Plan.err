@@ -5,6 +5,8 @@ import nodemailer from "nodemailer"
 import { prisma } from "../lib/prisma";
 import { getMailClient } from "../lib/mail";
 import { dayjs } from "../lib/dayjs";
+import { ClientError } from "../errors/client-errors";
+import { env } from "../env"
 
 export async function confirmTrip(app: FastifyInstance) {
 
@@ -30,11 +32,11 @@ export async function confirmTrip(app: FastifyInstance) {
         })
 
         if (!trip) {
-            throw new Error("Trip not found")
+            throw new ClientError("Trip not found")
         }
 
         if (trip.is_confirmed) {
-            return reply.redirect(`https://localhost:3000/trips/${tripId}`)
+            return reply.redirect(`${env.WEB_BASE_URL}/trips/${tripId}`)
         }
 
         await prisma.trip.update({
@@ -49,7 +51,7 @@ export async function confirmTrip(app: FastifyInstance) {
 
         await Promise.all(
             trip.participants.map(async (participant) => {
-                const confirmationLink = `https://localhost:3333/participants/${participant.id}/confirm`
+                const confirmationLink = `${env.API_BASE_URL}/participants/${participant.id}/confirm`
                 const message = await mail.sendMail({
                     from: {
                         name: 'Equipe Planner',
@@ -75,7 +77,7 @@ export async function confirmTrip(app: FastifyInstance) {
             })
         )
 
-        return reply.redirect(`https://localhost:3000/trips/${tripId}`)
+        return reply.redirect(`${env.WEB_BASE_URL}/trips/${tripId}`)
     })
 }
 
