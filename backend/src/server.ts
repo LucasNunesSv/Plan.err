@@ -19,7 +19,8 @@ import { env } from "./env";
 const app = fastify()
 
 app.register(cors, {
-    origin: `${env.API_BASE_URL}`
+    origin: `*`,
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
 })
 
 app.setValidatorCompiler(validatorCompiler);
