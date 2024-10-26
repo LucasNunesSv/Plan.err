@@ -1,7 +1,7 @@
 import { MapPin, Calendar, Settings2, ArrowRight, X } from "lucide-react";
 import Button from "../../../components/button";
 import { useState } from "react";
-import { DateRange, DayPicker, getDefaultClassNames } from "react-day-picker";
+import { DateRange, DayPicker } from "react-day-picker";
 import "react-day-picker/style.css";
 import { format } from "date-fns"
  
@@ -9,13 +9,14 @@ interface DestinationAndDateStepProps {
     isGuestsInputOpen: boolean
     openGuestsInput: () => void
     closeGuestsInput: () => void
+    setDestination: (destination: string) => void
+    setEventStartAndEndDate: (eventStarAndEndDate: DateRange | undefined) => void
+    eventStartAndEndDate: DateRange | undefined
 }
 
-export default function DestinationAndDateStep({ closeGuestsInput, isGuestsInputOpen, openGuestsInput }: DestinationAndDateStepProps) {
+export default function DestinationAndDateStep({ closeGuestsInput, isGuestsInputOpen, openGuestsInput, setDestination, setEventStartAndEndDate, eventStartAndEndDate }: DestinationAndDateStepProps) {
 
     const [isDatePickerOpen, setIsDatePickerOpen] = useState(false)
-    const [eventStartAndEndDate, setEventStartAndEndDate] = useState<DateRange | undefined>()
-    const defaultClassNames = getDefaultClassNames()
     const displayedDate = eventStartAndEndDate && eventStartAndEndDate.from && eventStartAndEndDate.to ? `${format(eventStartAndEndDate.from, "d' de 'LLL")} a ${format(eventStartAndEndDate.to, "d")} de ${format(eventStartAndEndDate.to, "LLL")}` : null
 
 
@@ -31,7 +32,12 @@ export default function DestinationAndDateStep({ closeGuestsInput, isGuestsInput
         <div className="h-16 bg-zinc-900 px-4 rounded-xl flex items-center shadow-shape gap-3">
             <div className='flex items-center gap-2 flex-1'>
                 <MapPin className='size-5 text-zinc-400' />
-                <input disabled={isGuestsInputOpen} type="text" placeholder="Para onde você vai?" className="bg-transparent text-lg text-zinc-400 outline-none" />
+                <input 
+                    onChange={event => setDestination(event.target.value)} 
+                    disabled={isGuestsInputOpen} type="text" 
+                    placeholder="Para onde você vai?" 
+                    className="bg-transparent text-lg text-zinc-400 outline-none" 
+                />
             </div>
 
             <button onClick={openDatePicker} className='flex items-center gap-2 text-left w-[240px]' disabled={isGuestsInputOpen}>

@@ -6,9 +6,11 @@ import TextInput from "../../components/textInput";
 interface ConfirmTripModalProps {
     closeConfirmTripModal: () => void
     createTrip: (event: FormEvent<HTMLFormElement>) => void
+    setOwnerName: (ownerName: string) => void
+    setOwnerEmail: (ownerEmail: string) => void
 }
 
-export default function ConfirmTripModal({closeConfirmTripModal, createTrip}: ConfirmTripModalProps) {
+export default function ConfirmTripModal({closeConfirmTripModal, createTrip, setOwnerName, setOwnerEmail}: ConfirmTripModalProps) {
 
     
     return (
@@ -28,11 +30,11 @@ export default function ConfirmTripModal({closeConfirmTripModal, createTrip}: Co
 
                 <form onSubmit={createTrip} className='space-y-3'>
 
-                    <TextInput type="text" name='name' placeholder="Seu nome completo">
+                    <TextInput onChange={event => setOwnerName(event.target.value)} type="text" name='name' placeholder="Seu nome completo">
                         <User className='text-zinc-400 size-5' />
                     </TextInput>
 
-                    <TextInput type="email" name='email' placeholder="Seu email pessoal">
+                    <TextInput onChange={event => setOwnerEmail(event.target.value)} type="email" name='email' placeholder="Seu email pessoal">
                         <Mail className='text-zinc-400 size-5' />
                     </TextInput>
 
