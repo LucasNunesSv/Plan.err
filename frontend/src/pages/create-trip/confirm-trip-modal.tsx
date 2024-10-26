@@ -2,17 +2,24 @@ import { X, User, Mail } from "lucide-react";
 import { FormEvent } from "react";
 import Button from "../../components/button";
 import TextInput from "../../components/textInput";
+import { Oval } from "react-loader-spinner";
+import { format } from "date-fns"
+import { DateRange } from "react-day-picker";
 
 interface ConfirmTripModalProps {
     closeConfirmTripModal: () => void
     createTrip: (event: FormEvent<HTMLFormElement>) => void
     setOwnerName: (ownerName: string) => void
     setOwnerEmail: (ownerEmail: string) => void
+    destination: string
+    eventStartAndEndDate: DateRange | undefined
+    isLoading: boolean
 }
 
-export default function ConfirmTripModal({closeConfirmTripModal, createTrip, setOwnerName, setOwnerEmail}: ConfirmTripModalProps) {
+export default function ConfirmTripModal({ closeConfirmTripModal, createTrip, setOwnerName, setOwnerEmail, destination, eventStartAndEndDate, isLoading }: ConfirmTripModalProps) {
 
-    
+    const displayedDate = eventStartAndEndDate && eventStartAndEndDate.from && eventStartAndEndDate.to ? `${format(eventStartAndEndDate.from, "d' de 'LLL")} a ${format(eventStartAndEndDate.to, "d")} de ${format(eventStartAndEndDate.to, "LLL")}` : null
+
     return (
         <div className='fixed inset-0 bg-black/60 flex items-center justify-center'>
             <div className='w-[640px] rounded-xl py-5 px-6 shadow-shape bg-zinc-900 space-y-5'>
@@ -24,7 +31,7 @@ export default function ConfirmTripModal({closeConfirmTripModal, createTrip, set
                         </button>
                     </div>
                     <p className='text-sm text-zinc-400'>
-                        Para concluir a criação da viagem para <span className='text-sm text-zinc-100'>Florianópolis, Brasil</span> nas datas de <span className='text-sm text-zinc-100'>16 a 27 de Agosto de 2024</span> preencha seus dados abaixo:
+                        Para concluir a criação da viagem para <span className='text-sm text-zinc-100'>{destination}</span> nas datas de <span className='text-sm text-zinc-100'>{displayedDate}</span> preencha seus dados abaixo:
                     </p>
                 </div>
 
@@ -39,7 +46,13 @@ export default function ConfirmTripModal({closeConfirmTripModal, createTrip, set
                     </TextInput>
 
                     <Button type='submit' variant="primary" size="full">
-                        Confirmar criação da viagem
+                        {isLoading ? (
+                            <div className="flex justify-center items-center gap-1">
+                                <Oval color="#fff" height={34} width={34} />
+                            </div>
+                        ) : (
+                            "Confirmar criação da viagem"
+                        )}
                     </Button>
                 </form>
             </div>

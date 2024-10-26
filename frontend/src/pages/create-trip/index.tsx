@@ -21,6 +21,8 @@ function CreateTripPage() {
     const [ownerEmail, setOwnerEmail] = useState('')
     const [eventStartAndEndDate, setEventStartAndEndDate] = useState<DateRange | undefined>()
 
+    const [isLoading, setIsLoading] = useState(false)
+
     function openGuestsInput() {
         setIsGuestsInputOpen(true)
     }
@@ -80,37 +82,51 @@ function CreateTripPage() {
 
         event.preventDefault()
 
+        setIsLoading(true)
+
         console.log(destination)
         console.log(ownerEmail)
         console.log(ownerName)
         console.log(emailsToInvite)
         console.log(eventStartAndEndDate)
 
-        if(!destination) {
+        if (!destination) {
             return
         }
-        if(!eventStartAndEndDate?.from || !eventStartAndEndDate?.to){
+        if (!eventStartAndEndDate?.from || !eventStartAndEndDate?.to) {
             return
         }
-        if(emailsToInvite.length === 0){
+        if (emailsToInvite.length === 0) {
             return
         }
-        if(!ownerName || !ownerEmail){
+        if (!ownerName || !ownerEmail) {
             return
         }
 
-        const response = await api.post("/trips", {
-            destination,
-            starts_at: eventStartAndEndDate.from,
-            ends_at: eventStartAndEndDate.to,
-            emails_to_invite: emailsToInvite,
-            owner_name: ownerName,
-            owner_email: ownerEmail
-        })
+        try {
 
-        const {tripId} = response.data
+            const response = await api.post("/trips", {
+                destination,
+                starts_at: eventStartAndEndDate.from,
+                ends_at: eventStartAndEndDate.to,
+                emails_to_invite: emailsToInvite,
+                owner_name: ownerName,
+                owner_email: ownerEmail
+            })
 
-        navigate(`/trips/${tripId}`)
+            const { tripId } = response.data
+            navigate(`/trips/${tripId}`)
+
+        } catch (error) {
+
+            window.alert("Erro ao criar viagem")
+            console.log(error)
+
+        } finally {
+
+            setIsLoading(false);
+
+        }
 
     }
 
@@ -160,10 +176,14 @@ function CreateTripPage() {
 
                 {isConfirmTripModalOpen ? (
                     <ConfirmTripModal
+                        destination={destination}
+                        eventStartAndEndDate={eventStartAndEndDate}
                         setOwnerName={setOwnerName}
                         setOwnerEmail={setOwnerEmail}
                         closeConfirmTripModal={closeConfirmTripModal}
-                        createTrip={createTrip} />
+                        createTrip={createTrip}
+                        isLoading={isLoading}
+                    />
                 ) : null}
 
             </div>
