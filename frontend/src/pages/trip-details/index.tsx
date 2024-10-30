@@ -19,6 +19,7 @@ export default function TripDetails() {
         setIsCreateActivityModalopen(false)
     }
 
+
     return (
         <div className="max-w-6xl px-6 py-10 mx-auto space-y-8">
 

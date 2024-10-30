@@ -4,6 +4,7 @@ import { useParams } from "react-router-dom";
 import { useEffect, useState } from "react";
 import { api } from "../../lib/axios";
 import { format } from "date-fns";
+import UpdateLocalAndDateModal from "./update-local-date-modal";
 
 interface Trip {
     id: string,
@@ -16,14 +17,24 @@ interface Trip {
 export default function DestinationAndDateHeader() {
 
     const { tripId } = useParams()
-    const [trip, setTrip] = useState<Trip | undefined>()
 
-    const displayedDate = trip 
-    ? `${format(trip?.starts_at, "d' de 'LLL")} a ${format(trip.ends_at, "d")} de ${format(trip.ends_at, "LLL")}` : null
+    const [trip, setTrip] = useState<Trip | undefined>()
+    const [isUpdateLocalAndDateModal, setIsUpdateLocalAndDateModal] = useState(false)
+
+    const displayedDate = trip
+        ? `${format(trip?.starts_at, "d' de 'LLL")} a ${format(trip.ends_at, "d")} de ${format(trip.ends_at, "LLL")}` : null
 
     useEffect(() => {
         api.get(`/trips/${tripId}`).then(response => setTrip(response.data.trip))
     }, [tripId])
+
+    function openUpdateLocalAndDateModal() {
+        setIsUpdateLocalAndDateModal(true)
+    }
+
+    function closeUpdateLocalAndDateModal() {
+        setIsUpdateLocalAndDateModal(false)
+    }
 
     return (
         <div className="px-4 h-16 rounded-xl bg-zinc-900 shadow-shape flex items-center justify-between">
@@ -37,11 +48,15 @@ export default function DestinationAndDateHeader() {
                     <span className="text-zinc-100">{displayedDate}</span>
                 </div>
                 <div className='w-px h-6 bg-zinc-800'></div>
-                <Button variant="secondary" >
+                <Button onClick={openUpdateLocalAndDateModal} variant="secondary" >
                     Alterar data/local
                     <Settings2 className='size-5 ' />
                 </Button>
             </div>
+
+            {isUpdateLocalAndDateModal ? (
+               <UpdateLocalAndDateModal closeUpdateLocalAndDateModal={closeUpdateLocalAndDateModal} />
+            ) : null}
         </div>
     )
 }

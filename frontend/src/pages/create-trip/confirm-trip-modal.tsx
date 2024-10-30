@@ -2,7 +2,7 @@ import { X, User, Mail } from "lucide-react";
 import { FormEvent } from "react";
 import Button from "../../components/button";
 import TextInput from "../../components/textInput";
-import { Oval } from "react-loader-spinner";
+import { ThreeDots } from "react-loader-spinner";
 import { format } from "date-fns"
 import { DateRange } from "react-day-picker";
 
@@ -48,7 +48,7 @@ export default function ConfirmTripModal({ closeConfirmTripModal, createTrip, se
                     <Button type='submit' variant="primary" size="full">
                         {isLoading ? (
                             <div className="flex justify-center items-center gap-1">
-                                <Oval color="#fff" height={34} width={34} />
+                                <ThreeDots color="#fff" height={34} width={34} />
                             </div>
                         ) : (
                             "Confirmar criação da viagem"
